@@ -25,7 +25,7 @@ class Login extends Component
             'password' => $this->password,
         ], $this->remember)) {
             session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/shop');
         }
 
         $this->addError('email', 'Email atau password salah');

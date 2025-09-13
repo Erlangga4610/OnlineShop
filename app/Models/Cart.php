@@ -12,4 +12,14 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function items()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function totalPrice()
+    {
+        return $this->items->sum(fn($item) => $item->price * $item->quantity);
+    }
 }

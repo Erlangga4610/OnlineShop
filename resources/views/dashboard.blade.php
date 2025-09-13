@@ -4,6 +4,7 @@
 
 @section('content')
     <!-- Begin Page Content -->
+    @if(auth()->user()->can('view-brands'))
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
@@ -333,4 +334,9 @@
 
                 </div>
                 <!-- /.container-fluid -->
+                @else
+    <div class="mb-3">
+        <h3 align="center">You do not have access to this page</h3>
+    </div>
+    @endif
 @endsection
