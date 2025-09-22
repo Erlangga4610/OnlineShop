@@ -25,7 +25,29 @@
             <ul class="navbar-nav ms-auto align-items-lg-center">
                 <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                     @livewire('shop.cart-badge')
+                    @livewire('shop.wishlist-icon')
                 </li>
             </ul>
         </div>
     </nav>
+
+    <div class="container mt-3 mb-4"> {{-- ganti my-4 jadi mt-3 --}}
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <form action="#" method="get" 
+                  class="d-flex align-items-center bg-white shadow-lg rounded-pill overflow-hidden px-3 py-2">
+                
+                <i class="fas fa-search text-muted ms-2 me-3"></i>
+                
+                <input type="text" name="s" 
+                       class="form-control border-0 shadow-none py-2 px-2"
+                       placeholder="Search products, categories, etc..." 
+                       style="font-size: 1rem;">
+                
+                <button class="btn btn-primary rounded-pill px-4" type="submit">
+                    Search
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

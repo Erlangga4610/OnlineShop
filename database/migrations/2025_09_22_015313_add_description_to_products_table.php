@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Rename kolom salah jadi kolom benar
         Schema::table('products', function (Blueprint $table) {
-            $table->decimal('price', 22, 2)->default(0)->change();
+                        $table->text('description')->nullable();
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Kembalikan ke kolom lama (tidak direkomendasikan, tapi untuk rollback)
         Schema::table('products', function (Blueprint $table) {
-            $table->decimal('price, 22, 2')->nullable()->change();
+            //
         });
     }
 };

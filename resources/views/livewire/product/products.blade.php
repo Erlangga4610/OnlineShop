@@ -6,7 +6,7 @@
         <div class="card-header py-2">
             <div class="d-flex justify-content-between align-items-center">
 
-                @can('create product')
+                @can('create-product')
                     <button type="button" class="btn btn-sm btn-primary"
                         data-bs-toggle="modal" data-bs-target="#formModal" wire:click="create">
                         Add Product
@@ -62,12 +62,12 @@
                                     <img src="{{ asset('/storage/'.$p->image) }}" class="rounded" style="max-width: 30px; object-fit: cover;">
                                 </td>
                                 <td>
-                                    @can('edit product')
+                                    @can('edit-product')
                                         <button wire:click="edit({{ $p->id }})" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#formModal">
                                             <i class="fa fa-edit"></i>
                                         </button>
                                     @endcan
-                                    @can('delete product')
+                                    @can('delete-product')
                                         <button wire:click="confirmDelete({{ $p->id }})" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -95,7 +95,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">{{ $modal_title }}</h5>
                     <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="fa-solid fa-xmark"></i>
+                        <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
                 <form wire:submit.prevent="{{ $mode == 'create' ? 'store' : 'update' }}" autocomplete="off">

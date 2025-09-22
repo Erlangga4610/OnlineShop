@@ -45,6 +45,12 @@
                         <a class="collapse-item" href="{{ route('categories') }}">
                             <i class="fa fa-th-large me-2 text-primary"></i> Category
                         </a>
+                        <a class="collapse-item" href="{{ route('discount') }}">
+                            <i class="fa-solid fa-percent me-2 text-primary"></i> Discount
+                        </a>
+                        <a class="collapse-item" href="{{ route('payment-methods') }}">
+                            <i class="fa-solid fa-percent me-2 text-primary"></i> Payment method
+                        </a>
                     </div>
                 </div>
             </li>

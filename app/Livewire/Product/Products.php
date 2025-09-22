@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Wishlist; // tambahkan
+use Illuminate\Support\Facades\Auth; // tambahkan
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -33,6 +35,10 @@ class Products extends Component
 
     public function mount()
     {
+        // Jika pengguna yang login bukan admin, paksa keluar.
+        // if (! auth()->user()->isAdmin()) { // atau sesuai dengan logika role Anda
+        //     abort(403, 'Unauthorized Access');
+        // }
         $this->brands = Brand::orderBy('name')->get();
         $this->categories = Category::orderBy('name')->get();
     }
@@ -186,6 +192,31 @@ class Products extends Component
             $this->sortDirection = 'asc';
         }
         $this->sortField = $field;
+    }
+
+    // 👉 Tambahkan wishlist
+    public function toggleWishlist($productId)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $wishlist = Wishlist::where('user_id', $user->id)
+            ->where('product_id', $productId)
+            ->first();
+
+        if ($wishlist) {
+            $wishlist->delete();
+            $this->dispatch('toastr', type: 'info', message: 'Produk dihapus dari wishlist 🤍');
+        } else {
+            Wishlist::create([
+                'user_id' => $user->id,
+                'product_id' => $productId
+            ]);
+            $this->dispatch('toastr', type: 'success', message: 'Produk ditambahkan ke wishlist ❤️');
+        }
     }
 
     public function render()

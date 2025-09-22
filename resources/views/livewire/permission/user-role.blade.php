@@ -5,7 +5,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-2">
             <div class="d-flex justify-content-between align-items-center">
-                @can('create product')
+                @can('create-user-role')
                     <button type="button" class="btn btn-sm btn-primary"
                         data-bs-toggle="modal" data-bs-target="#roleModal" wire:click="create">
                         Add New Role
@@ -43,10 +43,10 @@
                                 @endforeach
                             </td>
                             <td>
-                                @can('edit product')
+                                @can('edit-user-role')
                                     <button class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fa fa-edit" wire:click="edit({{ $user->id }})" data-bs-toggle="modal" data-bs-target="#roleModal"></i></button>
                                 @endcan
-                                @can('delete product')
+                                @can('delete-user-role')
                                     <button wire:click="confirmDeleteRole({{ $user->id }}, '{{ $user->name }}')"data-bs-toggle="modal" data-bs-target="#removeRoleModal" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"><i class="fa fa-trash"></i></button>
                                 @endcan
                             </td>

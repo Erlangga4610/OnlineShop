@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $name, $guard_name, $permissionId;
+    public $name, $guard_name = 'web', $permissionId;
     public $mode = "create";
     public $modalMode = "form"; // "form" atau "delete"
     public $search = '';

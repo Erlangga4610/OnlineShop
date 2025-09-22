@@ -5,11 +5,11 @@
 
         <div class="card-header py-2">
             <div class="d-flex justify-content-between align-items-center">
-                {{-- @can('create') --}}
+                @can('create-permission')
                     <button type="button" class="btn btn-sm btn-primary" wire:click="create">
                         Add Permission
                     </button>
-                {{-- @endcan --}}
+                @endcan
 
                 <div>
                     <input type="text" wire:model.live.debounce.100ms="search" 
@@ -105,7 +105,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Guard Name</label>
                                 <input type="text" wire:model.defer="guard_name"
-                                       class="form-control @error('guard_name') is-invalid @enderror">
+                                       class="form-control  @error('guard_name') is-invalid @enderror">
                                 @error('guard_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>

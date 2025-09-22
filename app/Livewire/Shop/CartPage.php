@@ -4,71 +4,95 @@ namespace App\Livewire\Shop;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Cart;
+use Livewire\Attributes\Layout;
+use App\Models\Cart; // Tambahkan ini jika belum ada
 
+#[Layout('components.layouts.shop')]
 class CartPage extends Component
 {
-  
-    public function removeItem($itemId)
+    public $itemToDelete = null;
+    public $productNameToDelete = null;
+    
+    // Properti baru untuk menyimpan data cart agar tidak perlu query berulang
+    public $cart;
+
+    /**
+     * Menggunakan computed property untuk total agar selalu terupdate
+     * setiap kali data cart berubah.
+     */
+    public function getTotalProperty()
     {
-        $cart = Auth::user()->cart;
+        return $this->cart?->items->sum(function($item) {
+            // Pastikan menghitung dari harga produk untuk akurasi
+            return $item->product->price * $item->quantity;
+        }) ?? 0;
+    }
 
-        if ($cart) {
-            $item = $cart->items()->where('id', $itemId)->first();
+    public function mount()
+    {
+        // Muat data cart sekali saat komponen di-mount
+        $this->loadCart();
+    }
 
-            if ($item) {
-                $productName = $item->product->name ?? 'Produk';
-                $item->delete();
+    public function loadCart()
+    {
+        // Ambil cart milik user dan eager load relasi yang dibutuhkan
+        $this->cart = Cart::where('user_id', Auth::id())
+                          ->with('items.product.category')
+                          ->first();
+    }
 
-                $this->dispatch('toastr', type: 'success', message: "{$productName} berhasil dihapus dari keranjang 🗑️");
-            }
+    public function confirmRemove($itemId)
+    {
+        $item = $this->cart?->items->find($itemId);
+        if ($item) {
+            $this->itemToDelete = $item->id;
+            $this->productNameToDelete = $item->product->name ?? 'Produk';
+            $this->dispatch('openRemoveModal');
         }
     }
 
-    // Tambah quantity item
+    public function removeItem()
+    {
+        $item = $this->cart?->items->find($this->itemToDelete);
+        if ($item) {
+            $productName = $item->product->name ?? 'Produk';
+            $item->delete();
+            $this->dispatch('toastr:success', ['message' => "{$productName} berhasil dihapus 🗑️"]);
+            $this->loadCart(); // Muat ulang data cart
+        }
+        $this->dispatch('closeRemoveModal');
+    }
+
     public function increaseQty($itemId)
     {
-        $cart = Auth::user()->cart;
-
-        if ($cart) {
-            $item = $cart->items()->where('id', $itemId)->first();
-            if ($item) {
-                $item->quantity += 1;
-                $item->save();
-            }
+        $item = $this->cart?->items->find($itemId);
+        if ($item) {
+            $item->increment('quantity');
+            $this->loadCart(); // Muat ulang data cart
         }
     }
 
-    // Kurangi quantity item
     public function decreaseQty($itemId)
     {
-        $cart = Auth::user()->cart;
-
-        if ($cart) {
-            $item = $cart->items()->where('id', $itemId)->first();
-            if ($item && $item->quantity > 1) {
-                $item->quantity -= 1;
-                $item->save();
-            } elseif ($item && $item->quantity <= 1) {
-                $productName = $item->product->name ?? 'Produk';
-                $item->delete();
-
-                
-                $this->dispatch('toastr', type: 'success', message: "{$productName} dihapus karena jumlah 0 🗑️");
-            }
+        $item = $this->cart?->items->find($itemId);
+        if ($item && $item->quantity > 1) {
+            $item->decrement('quantity');
+            $this->loadCart(); // Muat ulang data cart
+        } elseif ($item && $item->quantity <= 1) {
+            $this->removeItem(); // Panggil fungsi hapus jika kuantitas jadi 0
         }
     }
 
-    // Render halaman cart
+    public function buyNow()
+    {
+        return $this->redirect(route('checkout'), navigate: true);
+    }
+    
     public function render()
     {
-        $cart = Auth::user()
-            ->cart()
-            ->with('items.product.category')
-            ->first();
-
-        $total = $cart?->items->sum(fn($item) => $item->price * $item->quantity) ?? 0;
-
-        return view('livewire.shop.cart-page', compact('cart', 'total'));
+        // Kirim view TANPA mengirimkan variabel secara manual.
+        // Livewire akan otomatis membuat properti public ($cart) tersedia di view.
+        return view('livewire.shop.cart-page');
     }
 }

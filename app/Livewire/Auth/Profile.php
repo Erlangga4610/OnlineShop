@@ -6,7 +6,9 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Address;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.shop')]
 class Profile extends Component
 {
     public $name, $email, $password;
@@ -125,7 +127,8 @@ class Profile extends Component
     }
 
     public function render()
-    {
-        return view('livewire.auth.profile');
-    }
+{
+    return view('livewire.auth.profile');
+}
+
 }

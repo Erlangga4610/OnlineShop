@@ -60,4 +60,31 @@ class User extends Authenticatable
     {
         return $this->hasOne(Cart::class, 'user_id');
     }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+   public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'super admin';
+    }
+
+    // Tambahkan method ini di dalam class User
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'user_id');
+    }
+
 }

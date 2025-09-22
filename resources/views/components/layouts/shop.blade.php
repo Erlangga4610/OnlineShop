@@ -34,7 +34,11 @@
             margin-top: 5px;
             font-size: 14px;
         }
+
+        
     </style>
+
+    
 
     @livewireStyles
 </head>
@@ -46,6 +50,7 @@
         @yield('content')
     </div>
    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>

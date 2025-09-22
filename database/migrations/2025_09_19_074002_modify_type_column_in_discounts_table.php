@@ -6,17 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('cart_items', function (Blueprint $table) {
-            $table->decimal('price', 15, 2)->after('quantity');
+        Schema::table('discounts', function (Blueprint $table) {
+            $table->string('type', 25)->change();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('cart_items', function (Blueprint $table) {
-            $table->dropColumn('price');
+        Schema::table('discounts', function (Blueprint $table) {
+            //
         });
     }
 };

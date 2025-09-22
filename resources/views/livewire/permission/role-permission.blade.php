@@ -7,7 +7,7 @@
         <div class="card-header py-2">
             <div class="d-flex justify-content-between align-items-center">
 
-                @can('create product')
+                @can('create-role')
                     <button type="button" class="btn btn-sm btn-primary"
                         data-bs-toggle="modal"  wire:click="create">
                         Add New Role
